@@ -5,8 +5,7 @@ from pydantic import BaseModel
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 import dbConnect as db
-import cityfinder as cf
-import datefinder as df
+import getnewsquery as gnq
 
 middleware = [
     Middleware(
@@ -56,13 +55,10 @@ def login(username: str = Body(..., description="The username of the user you wa
     return db.verifyUser(username, userPassword)
 
 
-#API to get the city from the latitude and longitude
-@app.post("/get-city/")
-def get_city(latitude: float = Body(..., description="The latitude of the location you want to get the city of"), longitude: float = Body(..., description="The longitude of the location you want to get the city of")):
-    return cf.get_city_from_lat_lng(latitude, longitude)
+#API to return criminal news from a given latitude and longitude
+@app.post("/get-news/")
+def get_news(latitude: float = Body(..., description="The latitude of the location you want to get news for"), longitude: float = Body(..., description="The longitude of the location you want to get news for")):
+    return gnq.return_news(latitude, longitude)
 
-#API to get the dates today and one month back
-@app.get("/get-dates/")
-def get_dates():
-    return df.return_dates()
+
 
