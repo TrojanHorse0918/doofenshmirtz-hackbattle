@@ -5,6 +5,8 @@ from pydantic import BaseModel
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 import dbConnect as db
+import cityfinder as cf
+import datefinder as df
 
 middleware = [
     Middleware(
@@ -52,3 +54,15 @@ def delete_record(userID: str = Body(..., description="The user ID of the user y
 @app.post("/login/")
 def login(username: str = Body(..., description="The username of the user you want to login"), userPassword: str = Body(..., description="The password of the user you want to login")):
     return db.verifyUser(username, userPassword)
+
+
+#API to get the city from the latitude and longitude
+@app.post("/get-city/")
+def get_city(latitude: float = Body(..., description="The latitude of the location you want to get the city of"), longitude: float = Body(..., description="The longitude of the location you want to get the city of")):
+    return cf.get_city_from_lat_lng(latitude, longitude)
+
+#API to get the dates today and one month back
+@app.get("/get-dates/")
+def get_dates():
+    return df.return_dates()
+
