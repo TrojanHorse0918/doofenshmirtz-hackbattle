@@ -7,6 +7,7 @@ from starlette.middleware.cors import CORSMiddleware
 import dbConnect as db
 import getnewsquery as gnq
 import emergencyservice as es
+import distanceFinder as df
 
 middleware = [
     Middleware(
@@ -80,7 +81,10 @@ def get_childcare(latitude: float = Body(..., description="The latitude of the l
     return es.get_childcare(longitude, latitude)
 
 
+#API route to return the distance between two points
+@app.post("/get-distance/")
+def get_distance(origin_latitude: float = Body(..., description="The latitude of the origin location"), origin_longitude: float = Body(..., description="The longitude of the origin location"), destination_latitude: float = Body(..., description="The latitude of the destination location"), destination_longitude: float = Body(..., description="The longitude of the destination location")):
+    origin_coords = [str(origin_latitude) + ", " + str(origin_longitude)]
+    destination_coords = [str(destination_latitude) + ", " + str(destination_longitude)]
 
-
-
-
+    return df.calculate_distance_matrix(origin_coords, destination_coords)
