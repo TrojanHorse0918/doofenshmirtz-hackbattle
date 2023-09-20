@@ -1,0 +1,142 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+  
+:root {
+    --primaryColor: #DE809D;
+    --hoverColor: #FEC7C7;
+    --loginBtn: #190152;
+    --whiteColor: #ffffff;
+    --blackColor: hsl(0, 0%, 18%);
+    --greyText: #636363;
+    --bgColor: #FFECD0;
+    --inputColor: hsl(330, 12%, 97%);
+    --biggestFontSize: 2.5rem;
+    --h1FontSize: 1.5rem;
+    --h2FontSize: 1.25rem;
+    --h3FontSize: 1rem;
+    --normalFontSize: 0.938rem;
+    --smallFontSize: 0.813rem;
+    --smallestFontSize: 0.75rem;
+}
+
+.registerPage{
+    height: 100vh;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+
+    .container {
+        height: 80vh;
+        width: 70%;
+        margin: auto;
+        justify-content: space-between;
+        background: transparent;
+
+        .formDiv{
+            margin: auto;
+            flex-direction: column;
+            gap: 3%;
+            .headerDiv {
+                text-align: center;
+                padding: 1rem 0;
+
+                h3 {
+                    font-size: 1.563rem;
+                    color: var(--blackColor);
+                    font-weight: 600;
+                }
+
+                .textDiv{
+                    font-size: 1rem;
+                }
+
+                img {
+                    width: 3.75rem;
+                    padding-bottom: 0.188rem;
+                }
+            }
+            .form {
+                gap: 3%;
+                padding: 3%;
+            
+                .inputDiv {
+                    padding: 3% 2%;
+            
+                    .icon {
+                        color: var(--greyText);
+                    }
+            
+                    input {
+                        background: none;
+                        outline: none;
+                        border: none;
+                        width: 100%;
+                    }
+            
+                    label {
+                        color: var(--blackColor);
+                        font-weight: 400;
+                        font-size: 1rem;
+                        padding: 1% 0;
+                        display: block;
+                    }
+            
+                    .input {
+                        gap: 3%;
+                        padding: 3%;
+                        background: var(--inputColor);
+                        border-radius: 0.3rem;
+                    }
+                }
+            
+                .btn {
+                    padding: 3% 5%;
+            
+                    background: var(--loginBtn);
+                    border-radius: 1rem;
+                    color: var(--whiteColor);
+                    align-items: center;
+                    margin: auto;
+                    justify-content: center;
+                    font-size: 1rem;
+                    width: 100%;
+                    gap: 3%;
+                    transition: 0.3s ease;
+            
+                    .icon {
+                        font-size: 1.563rem;
+                        transition: 0.3s ease;
+                    }
+            
+                    &:hover {
+                        background: var(--hoverColor);
+                        color: var(--blackColor);
+            
+                        .icon {
+                            color: var(--blackColor);
+                            transform: translateX(3%);
+                        }
+                    }
+                }
+            
+                .forgotPassword {
+                    font-size: 0.875rem;
+                    color: var(--blackColor);
+                    opacity: 0.7;
+                    text-align: center;
+            
+                    a {
+                        text-decoration: underline;
+                        cursor: pointer;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+

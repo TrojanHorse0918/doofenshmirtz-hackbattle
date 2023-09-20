@@ -1,11 +1,8 @@
 import routePoints as rp
 from distanceFinder import calculate_distance_matrix
+from test import get_hotspots
 
-hotspots = [
-    (49.273878, -123.044158),
-    (49.258080, -123.033771),
-    (49.345, -122.9983)
-]
+hotspots = get_hotspots()
 
 origin = '49.269802, -123.083763'  # Point A
 destination = '49.249896, -122.966601'  # Point B
@@ -36,3 +33,5 @@ def safestRoute(origin, destination, hotspots):
     # print(list_sums)
 
     return list_sums.index(min(list_sums))
+
+# print(safestRoute(origin, destination, hotspots))

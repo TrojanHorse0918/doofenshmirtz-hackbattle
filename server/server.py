@@ -8,6 +8,7 @@ import dbConnect as db
 import getnewsquery as gnq
 import emergencyservice as es
 import distanceFinder as df
+import safestRoute as safe
 
 middleware = [
     Middleware(
@@ -88,3 +89,11 @@ def get_distance(origin_latitude: float = Body(..., description="The latitude of
     destination_coords = [str(destination_latitude) + ", " + str(destination_longitude)]
 
     return df.calculate_distance_matrix(origin_coords, destination_coords)
+
+#API route to return the safest route between two points
+@app.post("/get-safest-route/")
+def get_safest_route(origin_latitude: float = Body(..., description="The latitude of the origin location"), origin_longitude: float = Body(..., description="The longitude of the origin location"), destination_latitude: float = Body(..., description="The latitude of the destination location"), destination_longitude: float = Body(..., description="The longitude of the destination location")):
+    origin = str(origin_latitude) + ", " + str(origin_longitude)
+    destination = str(destination_latitude) + ", " + str(destination_longitude)
+
+    return safe.safestRoute(origin, destination, safe.hotspots)
