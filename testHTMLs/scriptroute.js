@@ -1,71 +1,70 @@
-function loadMapScenario() {
-    console.log("loadMapScenario");
-    // Sample latitude and longitude points
-    const startPoint = { lat: 37.7749, lng: -122.4194, title: 'Start Point' };
-    const endPoint = { lat: 37.3382, lng: -121.8863, title: 'End Point' }; // Sample end point
+function displayRoute(startLatitude, startLongitude, endLatitude, endLongitude, waypointsToAvoid) {
   const map = new Microsoft.Maps.Map(document.getElementById('map'), {
-    center: new Microsoft.Maps.Location(startPoint.lat, startPoint.lng),
+    credentials: 'Akg2tJWLm6UJu1jjM-aF_OGgQDkJC3xbDV6xgimSckEaBw-ShyHZrWE1MQm0J6o8',  // Replace with your actual API key
+    center: new Microsoft.Maps.Location(startLatitude, startLongitude),
     zoom: 10
   });
 
-  // Add pushpins for start and end points
-  const startPin = new Microsoft.Maps.Pushpin(
-    new Microsoft.Maps.Location(startPoint.lat, startPoint.lng),
-    {
-      title: startPoint.title
-    }
-  );
+  const startLocation = new Microsoft.Maps.Location(startLatitude, startLongitude);
+  const endLocation = new Microsoft.Maps.Location(endLatitude, endLongitude);
 
-  const endPin = new Microsoft.Maps.Pushpin(
-    new Microsoft.Maps.Location(endPoint.lat, endPoint.lng),
-    {
-      title: endPoint.title
-    }
-  );
+  // Add pushpins for start and end points
+  const startPin = new Microsoft.Maps.Pushpin(startLocation, {
+    title: 'Start Point'
+  });
+
+  const endPin = new Microsoft.Maps.Pushpin(endLocation, {
+    title: 'End Point'
+  });
+
+  // Add pushpins to the avoid coordinates
+  waypointsToAvoid.forEach(waypoint => {
+    const waypointLocation = new Microsoft.Maps.Location(waypoint.latitude, waypoint.longitude);
+    const waypointPin = new Microsoft.Maps.Pushpin(waypointLocation, {
+      title: 'Avoid Point'
+    });
+    map.entities.push(waypointPin);
+  });
+
+
 
   map.entities.push(startPin);
   map.entities.push(endPin);
 
-  // Create a directions manager
-  const directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+  // Calculate the route using Bing Maps REST Services API
+  Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+    const directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
 
-  // Specify the start and end waypoints for the route
-  const startWaypoint = new Microsoft.Maps.Directions.Waypoint({
-    location: new Microsoft.Maps.Location(startPoint.lat, startPoint.lng),
-    pushpin: startPin
+    const waypointStart = new Microsoft.Maps.Directions.Waypoint({ location: startLocation });
+    const waypointEnd = new Microsoft.Maps.Directions.Waypoint({ location: endLocation });
+
+    directionsManager.addWaypoint(waypointStart);
+    directionsManager.addWaypoint(waypointEnd);
+
+    directionsManager.setRequestOptions({
+      routeMode: Microsoft.Maps.Directions.RouteMode.driving,
+      routeDraggable: false,
+    });
+
+    directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('itineraryContainer') });
+    directionsManager.calculateDirections();
   });
-
-  const endWaypoint = new Microsoft.Maps.Directions.Waypoint({
-    location: new Microsoft.Maps.Location(endPoint.lat, endPoint.lng),
-    pushpin: endPin
-  });
-
-  console.log(startWaypoint);
-  console.log(endWaypoint);
-
-  directionsManager.addWaypoint(startWaypoint);
-  directionsManager.addWaypoint(endWaypoint);
-
-  // Set the render options for the directions
-  const renderOptions = {
-    itineraryContainer: document.getElementById('itineraryContainer'),
-    waypointPushpinOptions: {
-      title: '{index}',
-      text: '{index}'
-    },
-    displayDisclaimer: true,
-    displayManeuverIcons: true,
-    displayPostItineraryItemHints: true,
-    displayRouteSelector: true
-  };
-  directionsManager.setRenderOptions(renderOptions);
-
-  // Calculate the directions
-  directionsManager.calculateDirections();
 }
 
 window.onload = function() {
-    console.log("window.onload");
-    loadMapScenario();
-};
+  // Example start and end coordinates
+  const startLatitude = 49.269802;
+  const startLongitude = -123.083763;
+  const endLatitude = 49.249896;
+  const endLongitude = -122.966601;
 
+  // Example waypoints to avoid (can be empty or null if none)
+  const waypointsToAvoid = [
+    { latitude: 48.0, longitude: -123.0 },
+    { latitude: 48.5, longitude: -123.5 },
+    { latitude: 48.472762, longitude: -122.342356 },
+  ];
+
+  // Call displayRoute with the provided coordinates and waypoints to avoid
+  displayRoute(startLatitude, startLongitude, endLatitude, endLongitude, waypointsToAvoid);
+};
