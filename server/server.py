@@ -6,6 +6,7 @@ from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 import dbConnect as db
 import getnewsquery as gnq
+import emergencyservice as es
 
 middleware = [
     Middleware(
@@ -59,6 +60,24 @@ def login(username: str = Body(..., description="The username of the user you wa
 @app.post("/get-news/")
 def get_news(latitude: float = Body(..., description="The latitude of the location you want to get news for"), longitude: float = Body(..., description="The longitude of the location you want to get news for")):
     return gnq.return_news(latitude, longitude)
+
+
+#API to return emergency services from a given latitude and longitude
+@app.post("/get-chemists/")
+def get_chemists(latitude: float = Body(..., description="The latitude of the location you want to get emergency services for"), longitude: float = Body(..., description="The longitude of the location you want to get emergency services for")):
+    return es.get_chemists(longitude, latitude)
+
+@app.post("/get-hospitals/")
+def get_hospitals(latitude: float = Body(..., description="The latitude of the location you want to get emergency services for"), longitude: float = Body(..., description="The longitude of the location you want to get emergency services for")):
+    return es.get_hospitals(longitude, latitude)
+
+@app.post("/get-police-stations/")
+def get_police_stations(latitude: float = Body(..., description="The latitude of the location you want to get emergency services for"), longitude: float = Body(..., description="The longitude of the location you want to get emergency services for")):
+    return es.get_policeStations(longitude, latitude)
+
+@app.post("/get-childcare")
+def get_childcare(latitude: float = Body(..., description="The latitude of the location you want to get emergency services for"), longitude: float = Body(..., description="The longitude of the location you want to get emergency services for")):
+    return es.get_childcare(longitude, latitude)
 
 
 

@@ -22,8 +22,8 @@ def get_city_from_lat_lng(latitude, longitude):
     except requests.RequestException as e:
         raise ValueError(f'Error fetching data: {e}')
 
-# latitude = 37.7749
-# longitude = -122.4194
+# latitude = 18.529536
+# longitude = 73.944999
 
 # try:
 #     city = get_city_from_lat_lng(latitude, longitude)
