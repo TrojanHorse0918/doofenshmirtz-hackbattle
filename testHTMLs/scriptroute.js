@@ -1,4 +1,4 @@
-function displayRoute(startLatitude, startLongitude, endLatitude, endLongitude, waypointsToAvoid) {
+function displayRoute(startLatitude, startLongitude, endLatitude, endLongitude, waypointsToAvoid, hospitals) {
   const map = new Microsoft.Maps.Map(document.getElementById('map'), {
     credentials: 'Akg2tJWLm6UJu1jjM-aF_OGgQDkJC3xbDV6xgimSckEaBw-ShyHZrWE1MQm0J6o8',  // Replace with your actual API key
     center: new Microsoft.Maps.Location(startLatitude, startLongitude),
@@ -16,6 +16,19 @@ function displayRoute(startLatitude, startLongitude, endLatitude, endLongitude, 
   const endPin = new Microsoft.Maps.Pushpin(endLocation, {
     title: 'End Point'
   });
+
+  //Add pins for each hospital in the list
+  hospitals.forEach(hospital => {
+    const hospitalLocation = new Microsoft.Maps.Location(hospital.latitude, hospital.longitude);
+    const hospitalPin = new Microsoft.Maps.Pushpin(hospitalLocation, {
+      title: hospital.title,
+      style: 50,
+      color: "red"
+    });
+    map.entities.push(hospitalPin);
+  });
+
+
 
   // Add pushpins to the avoid coordinates
   waypointsToAvoid.forEach(waypoint => {
@@ -58,6 +71,15 @@ window.onload = function() {
   const endLatitude = 49.249896;
   const endLongitude = -122.966601;
 
+
+
+  const hospitals = [
+    { latitude: 49.283797, longitude: -123.136465, title: 'Hospital 1' },
+    { latitude: 49.269585, longitude: -123.160825, title: 'Hospital 2' },
+    { latitude: 49.260557, longitude: -123.122714, title: 'Hospital 3' },
+    { latitude: 49.257912, longitude: -123.093218, title: 'Hospital 4' },
+  ]
+
   // Example waypoints to avoid (can be empty or null if none)
   const waypointsToAvoid = [
     { latitude: 48.0, longitude: -123.0 },
@@ -66,5 +88,5 @@ window.onload = function() {
   ];
 
   // Call displayRoute with the provided coordinates and waypoints to avoid
-  displayRoute(startLatitude, startLongitude, endLatitude, endLongitude, waypointsToAvoid);
+  displayRoute(startLatitude, startLongitude, endLatitude, endLongitude, waypointsToAvoid, hospitals);
 };
